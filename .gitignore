@@ -87,3 +87,19 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# misc
+.DS_Store
+.dccache
+
+# video
+*.webm
+*.mp4
+
+# training/testing folder
+MOT16
+resources
+
+# output folders
+results
+track_result

@@ -6,8 +6,9 @@ import show_results
 
 def convert(filename_in, filename_out, ffmpeg_executable="ffmpeg"):
     import subprocess
-    command = [ffmpeg_executable, "-i", filename_in, "-c:v", "libx264",
-               "-preset", "slow", "-crf", "21", filename_out]
+    command = [ffmpeg_executable, "-i", filename_in, filename_out]
+    # command = [ffmpeg_executable, "-i", filename_in, "-c:v", "libx264",
+    #            "-preset", "slow", "-crf", "21", filename_out]
     subprocess.call(command)
 
 
@@ -42,10 +43,11 @@ if __name__ == "__main__":
     for sequence_txt in os.listdir(args.result_dir):
         sequence = os.path.splitext(sequence_txt)[0]
         sequence_dir = os.path.join(args.mot_dir, sequence)
-        if not os.path.exists(sequence_dir):
-            continue
+        print(sequence_txt, sequence, sequence_dir)
+        # if not os.path.exists(sequence_dir):
+        #     continue
         result_file = os.path.join(args.result_dir, sequence_txt)
-        update_ms = args.update_ms
+        update_ms = float(args.update_ms)
         video_filename = os.path.join(args.output_dir, "%s.avi" % sequence)
 
         print("Saving %s to %s." % (sequence_txt, video_filename))

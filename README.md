@@ -18,6 +18,12 @@ needed to run the tracker:
 
 Additionally, feature generation requires TensorFlow (>= 1.0).
 
+To install an anaconda environment for this code, run the following:
+
+```sh
+conda create --name deepsort python=3.5 opencv numpy scikit-learn tensorflow ffmpeg
+```
+
 ## Installation
 
 First, clone the repository:
@@ -115,6 +121,77 @@ The `deep_sort_app.py` expects detections in a custom format, stored in .npy
 files. These can be computed from MOTChallenge detections using
 `generate_detections.py`. We also provide
 [pre-generated detections](https://drive.google.com/open?id=1VVqtL0klSUvLnmBKS89il1EKC3IxUBVK).
+
+## Show results
+
+```sh
+usage: show_results.py [-h] --sequence_dir SEQUENCE_DIR --result_file
+                       RESULT_FILE [--detection_file DETECTION_FILE]
+                       [--update_ms UPDATE_MS] [--output_file OUTPUT_FILE]
+                       [--show_false_alarms SHOW_FALSE_ALARMS]
+
+Siamese Tracking
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --sequence_dir SEQUENCE_DIR
+                        Path to the MOTChallenge sequence directory.
+  --result_file RESULT_FILE
+                        Tracking output in MOTChallenge file format.
+  --detection_file DETECTION_FILE
+                        Path to custom detections (optional).
+  --update_ms UPDATE_MS
+                        Time between consecutive frames in milliseconds.
+                        Defaults to the frame_rate specified in seqinfo.ini,
+                        if available.
+  --output_file OUTPUT_FILE
+                        Filename of the (optional) output video.
+  --show_false_alarms SHOW_FALSE_ALARMS
+                        Show false alarms as red bounding boxes.
+```
+
+```python
+python3 show_results.py \
+    --sequence_dir=./MOT16/test/MOT16-06 \
+    --detection_file=./resources/detections/MOT16_POI_test/MOT16-06.npy \
+    --result_file=./track_result/MOT16-06-result.txt \
+    --output_file=MOT16-06.mp4
+```
+
+## Generating videos
+
+```sh
+usage: generate_videos.py [-h] --mot_dir MOT_DIR --result_dir RESULT_DIR
+                          --output_dir OUTPUT_DIR
+                          [--convert_h264 CONVERT_H264]
+                          [--update_ms UPDATE_MS]
+
+Siamese Tracking
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --mot_dir MOT_DIR     Path to MOTChallenge directory (train or test)
+  --result_dir RESULT_DIR
+                        Path to the folder with tracking output.
+  --output_dir OUTPUT_DIR
+                        Folder to store the videos in. Will be created if it
+                        does not exist.
+  --convert_h264 CONVERT_H264
+                        If true, convert videos to libx264 (requires FFMPEG
+  --update_ms UPDATE_MS
+                        Time between consecutive frames in milliseconds.
+                        Defaults to the frame_rate specified in seqinfo.ini,
+                        if available.
+```
+
+```python
+python generate_videos.py \
+    --mot_dir=./MOT16/test/ \
+    --result_dir=./track_result \
+    --output_dir=./results \
+    --convert_h264=true \
+    --update_ms=5
+```
 
 ## Citing DeepSORT
 
